@@ -15,7 +15,6 @@ from datacube import Datacube
 from datacube.testutils.io import rio_slurp_xarray
 from datacube.utils.geometry import assign_crs
 from odc.algo import xr_reproject
-from odc.dscache.tools.tiling import GRIDS
 from odc.stats.model import Task, DateTimeRange, OutputProduct, StatsPluginInterface
 from pyproj import Proj, transform
 
@@ -492,7 +491,6 @@ class PredGMS2(StatsPluginInterface):
     def __init__(self):
         # target band to be saved
         self.bands = ('mask', 'prob')  # skip, 'filtered')
-        self.africa_N = GRIDS[f'africa_{PredConf.resolution[1]}']
 
     @property
     def measurements(self) -> Tuple[str, ...]:
@@ -505,12 +503,11 @@ class PredGMS2(StatsPluginInterface):
         """
         dc = Datacube(app=self.target_product)
 
-        geobox = self.africa_N.tile_geobox(task.tile_index)
         ds = dc.load(
             product=self.source_product,
             time=str(PredConf.datetime_range.start.year),
             measurements=list(PredConf.rename_dict.values()),
-            like=geobox,
+            like=task.geobox,
             dask_chunks={},
         )
 
