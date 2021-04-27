@@ -112,7 +112,7 @@ def dump_to_odc(
     default=False,
     help="Needed when accessing requester pays public buckets",
 )
-@click.argument("endpoint_url", type=str, nargs=1,default=None)
+@click.option("--endpoint-url",is_flag=False,type=str,default=None, help="Custom endpoint url")
 @click.argument("uri", type=str, nargs=1)
 @click.argument("product", type=str, nargs=1)
 def cli(
