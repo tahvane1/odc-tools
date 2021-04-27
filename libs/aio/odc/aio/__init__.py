@@ -313,6 +313,7 @@ class S3Fetcher(object):
         region_name=None,
         addressing_style="path",
         aws_unsigned=None,
+        endpoint_url=None,
     ):
 
         self._closed = True
@@ -340,7 +341,7 @@ class S3Fetcher(object):
 
         async def setup(s3_cfg):
             session = aiobotocore.get_session()
-            s3_ctx = session.create_client("s3", region_name=region_name, config=s3_cfg)
+            s3_ctx = session.create_client("s3", region_name=region_name, config=s3_cfg, endpoint_url=endpoint_url)
             s3 = await s3_ctx.__aenter__()
             return (session, s3, s3_ctx)
 

@@ -112,6 +112,7 @@ def dump_to_odc(
     default=False,
     help="Needed when accessing requester pays public buckets",
 )
+@click.argument("endpoint_url", type=str, nargs=1,default=None,help="Custom endpoint url")
 @click.argument("uri", type=str, nargs=1)
 @click.argument("product", type=str, nargs=1)
 def cli(
@@ -126,6 +127,7 @@ def cli(
     request_payer,
     uri,
     product,
+    endpoint_url
 ):
     """ Iterate through files in an S3 bucket and add them to datacube"""
 
@@ -140,7 +142,7 @@ def cli(
         opts["RequestPayer"] = "requester"
 
     # Get a generator from supplied S3 Uri for metadata definitions
-    fetcher = S3Fetcher(aws_unsigned=no_sign_request)
+    fetcher = S3Fetcher(aws_unsigned=no_sign_request,endpoint_url=endpoint_url)
 
     # TODO: Share Fetcher
     s3_obj_stream = s3_find_glob(uri, skip_check=skip_check, s3=fetcher, **opts)
