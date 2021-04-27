@@ -129,7 +129,7 @@ def cli(
     uri,
     product,
     endpoint_url,
-    region
+    region_name
 ):
     """ Iterate through files in an S3 bucket and add them to datacube"""
 
